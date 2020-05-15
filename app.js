@@ -3,11 +3,29 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+//db setup
+mongoose.connect('mongodb+srv://gaurav:gaurav@cluster0-kplbl.mongodb.net/test?retryWrites=true&w=majority', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(function(connection){
+  console.log(connection)
+  var db = require('./model/dboperations')
+  return db.addContactInfo('Test','User','gaurav123@gmail.com','','DBA')
+})
+.then(function(response){
+  console.log(response);
+})
+.catch(function(err){
+  console.log(err);
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
